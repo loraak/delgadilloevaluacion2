@@ -7,7 +7,7 @@
         <nav th:replace="fragments/fragment :: breadcrumb('Panel de Divisiones', null, null)"></nav>
         <div class="container">
             <main>
-                <h2 class="text-center my-4">Panel - Divisiones</h2>
+                <h2 class="text-center my-4">Divisiones</h2>
                 <table id="divisiones-table" class="table table-striped table-hover align-middle">
                     <thead>
                         <tr style="background-color: #6AA276; color: white;">
@@ -15,7 +15,6 @@
                             <th>Clave</th>
                             <th>Nombre</th>
                             <th>Activo</th>
-                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -24,68 +23,11 @@
                             <td th:text="${division.clave}"></td>
                             <td th:text="${division.nombre}"></td>
                             <td th:text="${division.activo ? 'Sí' : 'No'}"></td>
-                            <td>
-                                <button type="button" class="btn btn-sm text-white fw-semibold"
-                                    style="background-color: #6AA276; border-color: #6AA276;"
-                                    th:onclick="|abrirModalDivision(${division.id})|">
-                                    Editar
-                                </button>
-                                <button type="button" class="btn btn-sm text-white fw-semibold"
-                                    style="background-color: #c0392b; border-color: #c0392b;"
-                                    th:onclick="|eliminarDivision(${division.id})|">
-                                    Eliminar
-                                </button>
-                            </td>
                         </tr>
                     </tbody>
                 </table>
             </main>
         </div>
-
-        <button type="button" onclick="abrirModalDivision()" class="btn text-white rounded-circle d-flex align-items-center justify-content-center shadow-lg"
-            style="position: fixed; bottom: 30px; left: 30px; width: 60px; height: 60px; background-color: #6AA276; border-color: #6AA276; font-size: 30px; z-index: 500; text-decoration: none;" title="Agregar División">
-            +
-        </button>
-
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Nueva División</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="divisonForm" class="needs-validation" novalidate onsubmit="guardarDivision(event)">
-                            <input type='hidden' id='id' name='id'>
-                            <div class="mb-3">
-                                <label for="clave" class="form-label">Clave de la División</label>
-                                <input type="text" class="form-control" id="clave" name="clave" placeholder="Ingrese la clave de la división" required>
-                                <div class="invalid-feedback">Por favor ingrese la clave.</div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="nombre" class="form-label">Nombre de la División</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese el nombre de la división" required>
-                                <div class="invalid-feedback">Por favor ingrese el nombre.</div>
-                            </div>
-                            <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="activo" name="activo">
-                                <label class="form-check-label" for="activo">Activa</label>
-                            </div>
-                            <div id="alertaError" class="alert alert-danger d-none" role="alert"></div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="submit" form="divisonForm" class="btn text-white fw-semibold" style="background-color: #6AA276; border-color: #6AA276;">
-                            Guardar
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
-            crossorigin="anonymous"></script>
-    <script th:src="@{/js/divisiones.js}"></script>
+        <div th:replace="fragments/fragment :: scripts"></div>
     </body>
 </html>

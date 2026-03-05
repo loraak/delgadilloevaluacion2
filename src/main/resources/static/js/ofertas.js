@@ -14,6 +14,7 @@ async function abrirModalOferta(id) {
             }
             const oferta = await response.json();
 
+            //  Cómo se indica, se obtienen todos los elementos desde el html. 
             document.getElementById('ofertaId').value = oferta.id;
             document.getElementById('nombreOferta').value = oferta.nombreOferta;
             document.getElementById('modalidad').value = oferta.modalidad;
@@ -29,7 +30,6 @@ async function abrirModalOferta(id) {
     } else {
         modalTitle.textContent = 'Agregar Oferta';
     }
-
     modal.show();
 }
 
@@ -116,6 +116,25 @@ async function guardarOferta(event) {
     }
 }
 
+//  Eliminar oferta educativa. 
+async function eliminarOferta(id) {
+    try {
+        const response = await fetch(`/api/oferta/delete/${id}`, {
+            method: 'DELETE'
+        });
+        if (response.ok) {
+            const tarjeta = document.getElementById(`oferta-card-${id}`);
+            if (tarjeta) {
+                tarjeta.remove();
+            }
+        } else {
+            console.log("Problemas");
+        }
+    } catch (error) {
+        console.error("Error", error);
+    }
+}
+
 function actualizarOAgregarCard(oferta) {
     const contenedor = document.getElementById('ofertas-container');
     if (!contenedor) {
@@ -151,11 +170,7 @@ function actualizarOAgregarCard(oferta) {
                         onclick="abrirModalOferta(${oferta.id})">Editar</button>
                 </div>
                 <div class="mt-2">
-                    <form action="/admin/oferta-educativa/delete/${oferta.id}" method="post">
-                        <input type="hidden" name="_method" value="delete" />
-                        <button type="submit" class="btn text-white w-100 fw-semibold"
-                            style="background-color: #C73E3E; border-color: #C73E3E;">Eliminar</button>
-                    </form>
+                    <button type="button" class="btn text-white w-100 fw-semibold" style="background-color: #C73E3E; border-color:#C73E3E;" th:onClick="|eliminarOferta(${oferta.id})|"> Eliminar </button>
                 </div>
             </div>
         </div>
