@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/fragment :: head('Inicio')"></head>
+
+    <body> 
+        <main>
+            <nav th:replace="fragments/fragment :: navbar"></nav>
+            <nav th:replace="fragments/fragment :: breadcrumb(null, null, null)"></nav>
+                <h1 class="display-1 text-center" th:text="'Hola'">
+                </h1>
+            <img th:src="@{/images/gato.jpg}" class="img-fluid d-block mx-auto">
+        </main>
+    </body>
+</html>

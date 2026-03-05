@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/fragment :: head('Ofertas Educativas')"></head>
+
+    <body> 
+        <nav th:replace="fragments/fragment :: navbar"></nav>
+        <nav th:replace="fragments/fragment :: breadcrumb('Panel de Ofertas Educativas', null, null)"></nav>
+        <div class="container">
+            <main>
+                <h2 class="text-center my-4">Panel - Ofertas Educativas</h2>
+                <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">      
+                    <div class="col" th:each="oferta : ${ofertas}">
+                        <div class="card h-100 shadow-sm border-1">
+                            <img th:src="@{${oferta.imagen}}" style="height: 200px; object-fit: cover;">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title fw-bold" th:text="${oferta.nombreOferta}">Nombre de la oferta</h5>
+                                <div class="mb-2">
+                                    <span class="text-dark" th:text="${oferta.modalidad}">Modalidad</span>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="text-dark" th:text="${oferta.division != null ? oferta.division.nombre : 'Sin división'}">División</span>
+                                </div>
+                                <div class="mt-auto pt-3">
+                                    <a class="btn text-white w-100 fw-semibold" style="background-color: #6AA276; border-color: #6AA276;">Estudiar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <div th:replace=""
+    </body>
+</html>
