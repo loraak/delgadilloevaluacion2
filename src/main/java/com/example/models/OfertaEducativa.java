@@ -2,12 +2,14 @@ package com.example.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Data; 
@@ -32,4 +34,8 @@ public class OfertaEducativa {
     @JoinColumn(name = "id_division")
     @JsonIgnoreProperties("programasEducativos")
     private Division division;
+
+    @OneToOne(mappedBy = "ofertaEducativa", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("ofertaEducativa")
+    private PerfilDeIngreso perfilDeIngreso; 
 }

@@ -13,12 +13,19 @@
                         <div class="card h-100 shadow-sm border-1">
                             <img th:src="@{${oferta.imagen}}" style="height: 200px; object-fit: cover;">
                             <div class="card-body d-flex flex-column">
+                                <h6 class="fw-semibold text-secondary">Nombre de la oferta:</h6>
                                 <h5 class="card-title fw-bold" th:text="${oferta.nombreOferta}">Nombre de la oferta</h5>
                                 <div class="mb-2">
+                                    <h7 class="fw-semibold text-secondary">Modalidad:</h7>
                                     <span class="text-dark" th:text="${oferta.modalidad}">Modalidad</span>
                                 </div>
                                 <div class="mb-2">
+                                    <h7 class="fw-semibold text-secondary">División:</h7>
                                     <span class="text-dark" th:text="${oferta.division != null ? oferta.division.nombre : 'Sin División'}">División</span>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="fw-bold">Perfil de Ingreso: </span>
+                                    <span class="text-dark" th:text="${oferta.perfilDeIngreso != null ? oferta.perfilDeIngreso.titulo : 'Sin perfil registrado'}"></span>
                                 </div>
                                 <div class="mt-auto pt-3">
                                     <button type="button" class="btn text-white w-100 fw-semibold"

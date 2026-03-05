@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/fragment :: head('Perfiles de Ingreso')"></head>
+
+    <body> 
+        <nav th:replace="fragments/fragment :: navbar"></nav>
+        <nav th:replace="fragments/fragment :: breadcrumb('Panel de Perfiles de Ingreso', null, null)"></nav>
+        <div class="container">
+            <main>
+                <h2 class="text-center my-4">Panel - Perfiles de Ingreso</h2>
+                <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">      
+                    <div class="col" th:each="perfil : ${perfiles}">
+                        <div class="card h-100 shadow-sm border-1">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title fw-bold" th:text="${perfil.titulo}">Nombre de la oferta</h5>
+                                <div class="mb-2">
+                                    <span class="text-dark" th:text="${perfil.descripcion}">Descripción</span>
+                                </div>
+                                <div class="mb-3">
+                                    <h6 class="fw-semibold text-secondary">Capacidades Transversales:</h6>
+                                    <ul class="list-unstyled mb-0" th:if="${!#lists.isEmpty(perfil.capacidadesTransversales)}">
+                                        <li th:each="capacidad : ${perfil.capacidadesTransversales}">
+                                            <span th:text="${capacidad.descripcion}"></span>
+                                        </li>
+                                    </ul>
+                                    <small class="text-muted" th:if="${#lists.isEmpty(perfil.capacidadesTransversales)}">
+                                        No hay capacidades registradas.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <div th:replace="fragments/fragment :: scripts"></div>
+    </body>
+</html>
