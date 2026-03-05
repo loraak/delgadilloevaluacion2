@@ -57,19 +57,19 @@
                     </div>
                     <div class="modal-body">
                         <form id="divisonForm" class="needs-validation" novalidate onsubmit="guardarDivision(event)">
-                            <input type='hidden' id='id' name='id'>
+                            <input type='hidden' id='divisionId' name='id'>
                             <div class="mb-3">
-                                <label for="clave" class="form-label">Clave de la División</label>
-                                <input type="text" class="form-control" id="clave" name="clave" placeholder="Ingrese la clave de la división" required>
+                                <label for="divisionClave" class="form-label">Clave de la División</label>
+                                <input type="text" class="form-control" id="divisionClave" name="clave" placeholder="Ingrese la clave de la división" required>
                                 <div class="invalid-feedback">Por favor ingrese la clave.</div>
                             </div>
                             <div class="mb-3">
-                                <label for="nombre" class="form-label">Nombre de la División</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese el nombre de la división" required>
+                                <label for="divisionNombre" class="form-label">Nombre de la División</label>
+                                <input type="text" class="form-control" id="divisionNombre" name="nombre" placeholder="Ingrese el nombre de la división" required>
                                 <div class="invalid-feedback">Por favor ingrese el nombre.</div>
                             </div>
                             <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="activo" name="activo">
+                                <input type="checkbox" class="form-check-input" id="divisionActivo" name="activo">
                                 <label class="form-check-label" for="activo">Activa</label>
                             </div>
                             <div id="alertaError" class="alert alert-danger d-none" role="alert"></div>

@@ -14,10 +14,10 @@ async function abrirModalDivision(id) {
             }
             const division = await response.json();
 
-            document.getElementById('id').value = division.id;
-            document.getElementById('clave').value = division.clave;
-            document.getElementById('nombre').value = division.nombre;
-            document.getElementById('activo').checked = division.activo;
+            document.getElementById('divisionId').value = division.id;
+            document.getElementById('divisionClave').value = division.clave;
+            document.getElementById('divisionNombre').value = division.nombre;
+            document.getElementById('divisionActivo').checked = division.activo;
 
         } catch (error) {
             console.error('Error al obtener los datos de la división:', error);
@@ -38,7 +38,7 @@ function limpiarFormulario() {
     form.reset();
     form.classList.remove('was-validated');
     document.getElementById('alertaError').classList.add('d-none');
-    document.getElementById('id').value = '';
+    document.getElementById('divisionId').value = '';
 }
 
 function mostrarAlerta(mensaje) {
@@ -55,16 +55,16 @@ async function guardarDivision(event) {
     form.classList.add('was-validated');
 
     if (!form.checkValidity()) {
-        console.warn('Formulario no válido');
         return;
     }
 
-    const formData = new FormData(form);
+    const id = document.getElementById('divisionId').value; 
+
     const data = {
-        id: formData.get('id') ? parseInt(formData.get('id')) : null,
-        clave: formData.get('clave'),
-        nombre: formData.get('nombre'),
-        activo: document.getElementById('activo').checked
+        id: id ? parseInt(id) : null, 
+        clave: document.getElementById('divisionClave').value,
+        nombre: document.getElementById('divisionNombre').value,
+        activo: document.getElementById('divisionActivo').checked
     };
 
     try {

@@ -21,7 +21,7 @@ import lombok.ToString;
 public class Division { 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @NotEmpty
     private String clave;
@@ -29,7 +29,7 @@ public class Division {
     @NotEmpty
     private String nombre; 
 
-    private boolean activo; 
+    private Boolean activo; 
 
     @ToString.Exclude
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "division")
