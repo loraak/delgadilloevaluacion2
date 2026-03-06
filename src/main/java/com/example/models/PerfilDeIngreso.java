@@ -32,6 +32,10 @@ public class PerfilDeIngreso{
     @JoinColumn(name = "perfil_id")
     private List<CapacidadTransversal> capacidadesTransversales; 
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "perfil_id")
+    private List<CapacidadEspecifica> capacidadesEspecificas; 
+
     @OneToOne()
     @JoinColumn(name = "oferta_id", unique = true)
     @JsonIgnoreProperties("perfilDeIngreso")

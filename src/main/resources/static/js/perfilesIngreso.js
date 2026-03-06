@@ -15,6 +15,23 @@ function agregarInputCapacidad(id = '', descripcion = '') {
     contenedor.appendChild(div);
 }
 
+function agregarInputCapacidadEsp(id = '', descripcion = '') {
+    const contenedor = document.getElementById('capacidadesEspContainer');
+
+    const div = document.createElement('div');
+    div.className = 'input-group mb-2 capacidadesp-item';
+
+    div.innerHTML = `
+        <input type="hidden" class="capacidadesp-id" value="${id}">
+        
+        <input type="text" class="form-control capacidadesp-descripcion" 
+        placeholder="Ej: Pensamiento crítico..." value="${descripcion}" required>
+        <button class="btn text-white" style="background-color: #C73E3E; border-color: #C73E3E;" 
+                type="button" onclick="this.parentElement.remove()">X</button>`;
+    
+    contenedor.appendChild(div);
+}
+
 function limpiarFormularioPerfil() {
     const form = document.getElementById('perfilForm');
     form.reset();
@@ -22,6 +39,7 @@ function limpiarFormularioPerfil() {
     document.getElementById('perfilId').value = '';
     document.getElementById('perfilAlertaError').classList.add('d-none');
     document.getElementById('capacidadesContainer').innerHTML = '';
+    document.getElementById('capacidadesEspContainer').innerHTML = '';
 }
 
 function mostrarAlertaPerfil(mensaje) {
@@ -55,6 +73,11 @@ async function abrirModalPerfil(id) {
                 perfil.capacidadesTransversales.forEach(capacidad => { agregarInputCapacidad(capacidad.id, capacidad.descripcion); }); 
                 } else { 
                     agregarInputCapacidad(); 
+                } 
+            if(perfil.capacidadesEspecificas && perfil.capacidadesEspecificas.length > 0) { 
+                perfil.capacidadesEspecificas.forEach(capacidadEsp => { agregarInputCapacidadEsp(capacidadEsp.id, capacidadEsp.descripcion); }); 
+                } else { 
+                    agregarInputCapacidadEsp(); 
                 } 
 
         } catch (error) {
@@ -94,6 +117,21 @@ async function guardarPerfil(event) {
         }
     }); 
 
+    const itemsEsp = document.querySelectorAll('.capacidadesp-item'); 
+    const listaCapacidadesEsp = []; 
+
+    itemsEsp.forEach(item => { 
+        const idCapacidadEsp = item.querySelector('.capacidadesp-id').value; 
+        const textoCapacidadEsp = item.querySelector('.capacidadesp-descripcion').value;
+
+        if (textoCapacidadEsp.trim() !== '') { 
+            listaCapacidadesEsp.push({
+                id: idCapacidadEsp ? parseInt(idCapacidadEsp) : null, 
+                descripcion: textoCapacidadEsp
+            }); 
+        }
+    });
+
     const idPerfil = document.getElementById('perfilId').value; 
 
     const data = { 
@@ -101,6 +139,7 @@ async function guardarPerfil(event) {
         titulo: document.getElementById('perfilTitulo').value, 
         descripcion: document.getElementById('perfilDescripcion').value, 
         capacidadesTransversales: listaCapacidades, 
+        capacidadesEspecificas: listaCapacidadesEsp,
         ofertaEducativa: document.getElementById('ofertaId').value ? { id: parseInt(document.getElementById('ofertaId').value) } : null
     }; 
 
@@ -158,6 +197,17 @@ function actualizarOAgregarCardPerfil(perfil) {
         capacidadesHtml = '<small class="text-muted">No hay capacidades registradas.</small>';
     }
 
+    let capacidadesHtmlEsp = '';
+    if (perfil.capacidadesEspecificas && perfil.capacidadesEspecificas.length > 0) {
+        capacidadesHtmlEsp = '<ul class="list-unstyled mb-0">';
+        perfil.capacidadesEspecificas.forEach(capacidadEsp => {
+            capacidadesHtmlEsp += `<li><span>${capacidadEsp.descripcion}</span></li>`;
+        });
+        capacidadesHtmlEsp += '</ul>';
+    } else {
+        capacidadesHtmlEsp = '<small class="text-muted">No hay capacidades específicas registradas.</small>';
+    }
+
     let nombreOferta = 'Sin oferta'; 
 
     if (perfil.ofertaEducativa && perfil.ofertaEducativa.nombreOferta) { 
@@ -183,6 +233,10 @@ function actualizarOAgregarCardPerfil(perfil) {
                 <div class="mb-3">
                     <h6 class="fw-semibold text-secondary">Capacidades Transversales:</h6>
                     ${capacidadesHtml}
+                </div>
+                <div class="mb-3">
+                    <h6 class="fw-semibold text-secondary">Capacidades Específicas:</h6>
+                    ${capacidadesHtmlEsp}
                 </div>
                 <div class="mb-2">
                     <h6 class="fw-semibold text-secondary">Oferta Educativa:</h6>

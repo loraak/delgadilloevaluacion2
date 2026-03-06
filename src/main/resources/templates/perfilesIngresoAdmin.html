@@ -29,6 +29,17 @@
                                         No hay capacidades registradas.
                                     </small>
                                 </div>
+                                <div class="mb-3">
+                                    <h6 class="fw-semibold text-secondary">Capacidades Específicas:</h6>
+                                    <ul class="list-unstyled mb-0" th:if="${!#lists.isEmpty(perfil.capacidadesEspecificas)}">
+                                        <li th:each="capacidadEsp : ${perfil.capacidadesEspecificas}">
+                                            <span th:text="${capacidadEsp.descripcion}"></span>
+                                        </li>
+                                    </ul>
+                                    <small class="text-muted" th:if="${#lists.isEmpty(perfil.capacidadesEspecificas)}">
+                                        No hay capacidades registradas.
+                                    </small>
+                                </div>
                                 <div class="mb-2">
                                     <h6 class="fw-semibold text-secondary">Oferta Educativa:</h6>
                                     <span class="text-dark" th:text="${perfil.ofertaEducativa != null ? perfil.ofertaEducativa.nombreOferta : 'Sin oferta'}">Oferta Educativa</span>
@@ -55,7 +66,7 @@
 
         <!-- Modal -->
         <div class="modal fade" id="perfilModal" tabindex="-1" aria-labelledby="perfilModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog">|
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="perfilModalLabel"></h1>
@@ -82,6 +93,14 @@
                                 
                                 <button type="button" class="btn btn-sm btn-outline-secondary mt-2" onclick="agregarInputCapacidad()">
                                     + Agregar Capacidad
+                                </button>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Capacidades Específicas:</label>
+                                <div id="capacidadesEspContainer"></div>
+                                
+                                <button type="button" class="btn btn-sm btn-outline-secondary mt-2" onclick="agregarInputCapacidadEsp()">
+                                    + Agregar Capacidad Específica
                                 </button>
                             </div>
                             <div class="mb-3">

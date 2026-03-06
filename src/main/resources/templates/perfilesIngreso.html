@@ -27,6 +27,17 @@
                                         No hay capacidades registradas.
                                     </small>
                                 </div>
+                                <div class="mb-3">
+                                    <h6 class="fw-semibold text-secondary">Capacidades Específicas:</h6>
+                                    <ul class="list-unstyled mb-0" th:if="${!#lists.isEmpty(perfil.capacidadesEspecificas)}">
+                                        <li th:each="capacidadEsp : ${perfil.capacidadesEspecificas}">
+                                            <span th:text="${capacidadEsp.descripcion}"></span>
+                                        </li>
+                                    </ul>
+                                    <small class="text-muted" th:if="${#lists.isEmpty(perfil.capacidadesEspecificas)}">
+                                        No hay capacidades registradas.
+                                    </small>
+                                </div>
                                 <div class="mb-2">
                                     <h6 class="fw-semibold text-secondary">Oferta Educativa:</h6>
                                     <span class="text-dark" th:text="${perfil.ofertaEducativa != null ? perfil.ofertaEducativa.nombreOferta : 'Sin oferta'}">Oferta Educativa</span>
