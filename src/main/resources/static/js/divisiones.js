@@ -131,29 +131,36 @@ function actualizarOAgregarFilaEnTabla(division) {
     }
 
 async function eliminarDivision(id) {
-    if (!confirm('¿Está seguro de que desea eliminar esta división?')) {
-        return;
-    }
+    Swal.fire({
+        title: '¿Está seguro?',
+        text: '¿Está seguro de que desea eliminar esta división?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#c0392b',
+        cancelButtonColor: '#6AA276',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            try {
+                const response = await fetch(`/api/division/delete/${id}`, {
+                    method: 'DELETE',
+                });
 
-    try {
-        const response = await fetch(`/api/division/delete/${id}`, {
-            method: 'DELETE',
-        });
-
-        const result = await response.json();
-
-        if (response.ok && result.success) {
-            const row = document.getElementById(`division-row-${id}`);
-            if (row) {
-                row.remove();
-            } else {
-                window.location.reload();
+                if (response.ok) {
+                    const row = document.getElementById(`division-row-${id}`);
+                    if (row) {
+                        row.remove();
+                    } else {
+                        window.location.reload();
+                    }
+                } else {
+                    Swal.fire('Error', 'Error al eliminar la división.', 'error');
+                }
+            } catch (error) {
+                console.error('Error al eliminar división:', error);
+                Swal.fire('Error', 'Ocurrió un error en la comunicación con el servidor.', 'error');
             }
-        } else {
-            alert(`Error al eliminar: ${result.message}`);
         }
-    } catch (error) {
-        console.error('Error al eliminar división:', error);
-        alert('Ocurrió un error en la comunicación con el servidor.');
-    }
+    });
 }
