@@ -151,26 +151,105 @@ function actualizarOAgregarCard(oferta) {
     }
 
     col.id = `oferta-card-${oferta.id}`;
-    const divisionNombre = oferta.division ? oferta.division.nombre : 'Sin División';
+
+    let divisionNombre = 'Sin División';
+
+    if (oferta.division && oferta.division.nombre) {
+        divisionNombre = oferta.division.nombre;
+    } else if (oferta.division && oferta.division.id) {
+        const selectDivision = document.getElementById('divisionId');
+        const opcionSeleccionada = selectDivision.options[selectDivision.selectedIndex];
+        if (opcionSeleccionada && opcionSeleccionada.value) {
+            divisionNombre = opcionSeleccionada.text;
+        }
+    }
+    
+    const perfilIngresoTitulo = oferta.perfilDeIngreso ? oferta.perfilDeIngreso.titulo : 'Sin perfil registrado';
+    const perfilProfesionalTitulo = oferta.perfilProfesional ? oferta.perfilProfesional.titulo : 'Sin perfil registrado';
+
+    let capacidadesTransversalesIngresoHtml = '';
+    if (oferta.perfilDeIngreso && oferta.perfilDeIngreso.capacidadesTransversales && oferta.perfilDeIngreso.capacidadesTransversales.length > 0) {
+        capacidadesTransversalesIngresoHtml = '<h7 class="fw-semibold text-secondary">Capacidades Transversales:</h7><ul class="list-unstyled">';
+        oferta.perfilDeIngreso.capacidadesTransversales.forEach(capacidad => {
+            capacidadesTransversalesIngresoHtml += `<li>${capacidad.descripcion}</li>`;
+        });
+        capacidadesTransversalesIngresoHtml += '</ul>';
+    }
+
+    let capacidadesEspecificasIngresoHtml = '';
+    if (oferta.perfilDeIngreso && oferta.perfilDeIngreso.capacidadesEspecificas && oferta.perfilDeIngreso.capacidadesEspecificas.length > 0) {
+        capacidadesEspecificasIngresoHtml = '<h7 class="fw-semibold text-secondary">Capacidades Específicas:</h7><ul class="list-unstyled">';
+        oferta.perfilDeIngreso.capacidadesEspecificas.forEach(capacidad => {
+            capacidadesEspecificasIngresoHtml += `<li>${capacidad.descripcion}</li>`;
+        });
+        capacidadesEspecificasIngresoHtml += '</ul>';
+    }
+
+    let capacidadesTransversalesProfesionalHtml = '';
+    if (oferta.perfilProfesional && oferta.perfilProfesional.capacidadesTransversales && oferta.perfilProfesional.capacidadesTransversales.length > 0) {
+        capacidadesTransversalesProfesionalHtml = '<h7 class="fw-semibold text-secondary">Capacidades Transversales:</h7><ul class="list-unstyled">';
+        oferta.perfilProfesional.capacidadesTransversales.forEach(capacidad => {
+            capacidadesTransversalesProfesionalHtml += `<li>${capacidad.descripcion}</li>`;
+        });
+        capacidadesTransversalesProfesionalHtml += '</ul>';
+    }
+
+    let capacidadesEspecificasProfesionalHtml = '';
+    if (oferta.perfilProfesional && oferta.perfilProfesional.capacidadesEspecificas && oferta.perfilProfesional.capacidadesEspecificas.length > 0) {
+        capacidadesEspecificasProfesionalHtml = '<h7 class="fw-semibold text-secondary">Capacidades Específicas:</h7><ul class="list-unstyled mb-0">';
+        oferta.perfilProfesional.capacidadesEspecificas.forEach(capacidad => {
+            capacidadesEspecificasProfesionalHtml += `<li>Ciclo ${capacidad.ciclo}: ${capacidad.descripcion}</li>`;
+        });
+        capacidadesEspecificasProfesionalHtml += '</ul>';
+    }
+
+    let competenciasBaseHtml = '';
+    if (oferta.perfilProfesional && oferta.perfilProfesional.competenciasBase && oferta.perfilProfesional.competenciasBase.length > 0) {
+        competenciasBaseHtml = '<h7 class="fw-semibold text-secondary">Competencias Base:</h7><ul class="list-unstyled">';
+        oferta.perfilProfesional.competenciasBase.forEach(competencia => {
+            competenciasBaseHtml += `<li>${competencia.descripcion}</li>`;
+        });
+        competenciasBaseHtml += '</ul>';
+    }
+
+    const planImagen = oferta.planEstudios ? oferta.planEstudios.imagen : '';
 
     col.innerHTML = `
         <div class="card h-100 shadow-sm border-1">
             <img src="${oferta.imagen || ''}" style="height: 200px; object-fit: cover;">
             <div class="card-body d-flex flex-column">
+                <h6 class="fw-semibold text-secondary">Nombre de la oferta:</h6>
                 <h5 class="card-title fw-bold">${oferta.nombreOferta}</h5>
                 <div class="mb-2">
+                    <h7 class="fw-semibold text-secondary">Modalidad:</h7>
                     <span class="text-dark">${oferta.modalidad}</span>
                 </div>
                 <div class="mb-2">
+                    <h7 class="fw-semibold text-secondary">División:</h7>
                     <span class="text-dark">${divisionNombre}</span>
                 </div>
+                <div class="mb-2">
+                    <span class="fw-bold">Perfil de Ingreso: </span>
+                    <span class="text-dark">${perfilIngresoTitulo}</span>
+                </div>
+                ${capacidadesTransversalesIngresoHtml ? `<div class="mb-2">${capacidadesTransversalesIngresoHtml}</div>` : ''}
+                ${capacidadesEspecificasIngresoHtml ? `<div class="mb-2">${capacidadesEspecificasIngresoHtml}</div>` : ''}
+                <div class="mb-2">
+                    <span class="fw-bold">Perfil Profesional: </span>
+                    <span class="text-dark">${perfilProfesionalTitulo}</span>
+                </div>
+                ${capacidadesTransversalesProfesionalHtml ? `<div class="mb-2">${capacidadesTransversalesProfesionalHtml}</div>` : ''}
+                ${capacidadesEspecificasProfesionalHtml ? `<div class="mb-2">${capacidadesEspecificasProfesionalHtml}</div>` : ''}
+                ${competenciasBaseHtml ? `<div class="mb-2">${competenciasBaseHtml}</div>` : ''}
+                <span class="fw-bold">Plan de Estudios: </span>
+                <img src="${planImagen || ''}" style="height: 200px; object-fit: cover;">
                 <div class="mt-auto pt-3">
                     <button type="button" class="btn text-white w-100 fw-semibold"
                         style="background-color: #6AA276; border-color: #6AA276;"
                         onclick="abrirModalOferta(${oferta.id})">Editar</button>
                 </div>
                 <div class="mt-2">
-                    <button type="button" class="btn text-white w-100 fw-semibold" style="background-color: #C73E3E; border-color:#C73E3E;" th:onClick="|eliminarOferta(${oferta.id})|"> Eliminar </button>
+                    <button type="button" class="btn text-white w-100 fw-semibold" style="background-color: #C73E3E; border-color:#C73E3E;" onclick="eliminarOferta(${oferta.id})"> Eliminar </button>
                 </div>
             </div>
         </div>
