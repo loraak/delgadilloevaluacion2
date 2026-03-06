@@ -138,7 +138,7 @@ function actualizarOAgregarCardPerfil(perfil) {
     }
 
     let col = document.getElementById(`perfil-card-${perfil.id}`);
-    
+
     if (!col) {
         col = document.createElement('div');
         col.className = 'col';
@@ -158,7 +158,18 @@ function actualizarOAgregarCardPerfil(perfil) {
         capacidadesHtml = '<small class="text-muted">No hay capacidades registradas.</small>';
     }
 
-    const nombreOferta = perfil.ofertaEducativa ? perfil.ofertaEducativa.nombreOferta : 'Sin oferta';
+    let nombreOferta = 'Sin oferta'; 
+
+    if (perfil.ofertaEducativa && perfil.ofertaEducativa.nombreOferta) { 
+        nombreOferta = perfil.ofertaEducativa.nombreOferta; 
+    } else if (perfil.ofertaEducativa && perfil.ofertaEducativa.id) { 
+        const selectOfertas = document.getElementById('ofertaId'); 
+
+        const opcionSeleccionada = selectOfertas.options[selectOfertas.selectedIndex]; 
+        if (opcionSeleccionada && opcionSeleccionada.value) {
+            nombreOferta = opcionSeleccionada.text; 
+        }
+    }
 
     col.innerHTML = `
         <div class="card h-100 shadow-sm border-1">
@@ -190,4 +201,22 @@ function actualizarOAgregarCardPerfil(perfil) {
             </div>
         </div>
     `;
+}
+
+async function eliminarPerfil(id) {
+    try {
+        const response = await fetch(`/api/perfil/delete/${id}`, {
+            method: 'DELETE'
+        });
+        if (response.ok) {
+            const tarjeta = document.getElementById(`perfil-card-${id}`);
+            if (tarjeta) { 
+                tarjeta.remove(); 
+            }
+        } else { 
+            console.log("Problemas"); 
+        }
+    } catch (error) { 
+        console.error("Error", error); 
+    }
 }

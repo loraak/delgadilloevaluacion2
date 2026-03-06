@@ -2,6 +2,7 @@ package com.example.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -81,5 +83,26 @@ public class PerfilDeIngresoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(java.util.Map.of("success", false, "message", "Error en el servidor")); 
         }
+    }
+
+
+    //  El if present es para saber si hay algo, si no simplemente no hace nada en la base de datos. Si el perfil existe, se lo pasa al delete del repositorio. 
+    @DeleteMapping("/api/perfil/delete/{id}")
+    @ResponseBody
+    public ResponseEntity<?> deletePerfil(@PathVariable Integer id) { 
+        Optional<PerfilDeIngreso> perfilOpt = repositorio.findById(id);
+        
+        if (perfilOpt.isPresent()) {
+            PerfilDeIngreso perfil = perfilOpt.get();
+            
+            if (perfil.getOfertaEducativa() != null) {
+                perfil.getOfertaEducativa().setPerfilDeIngreso(null);
+            }
+            
+            repositorio.delete(perfil);
+            return ResponseEntity.ok().build(); 
+        }
+        
+        return ResponseEntity.notFound().build(); 
     }
 }
