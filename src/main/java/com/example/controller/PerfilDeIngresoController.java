@@ -1,9 +1,10 @@
 package com.example.controller;
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,7 +52,7 @@ public class PerfilDeIngresoController {
         return repositorio.findById(id).orElse(null); 
     }
 
-    @PostMapping(value = "/api/peril/save", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "/api/perfil/save", consumes = "application/json", produces = "application/json")
     public ResponseEntity<?> savePerfilAsync(@Valid @RequestBody PerfilDeIngreso perfilDeIngreso, Errors errores) { 
         if (errores.hasErrors()) { 
             return ResponseEntity.badRequest()
@@ -59,10 +60,24 @@ public class PerfilDeIngresoController {
         }
 
         try { 
-            PerfilDeIngreso savedPerfil = repositorio.save(perfilDeIngreso);
+            //  Validación de oferta educativa
+            if (perfilDeIngreso.getOfertaEducativa() != null) { 
+                Integer ofertaId = perfilDeIngreso.getOfertaEducativa().getId(); 
 
+                repositorio.findByOfertaEducativaId(ofertaId).ifPresent(existente -> { 
+                    if (!existente.getId().equals(perfilDeIngreso.getId())){
+                        throw new IllegalArgumentException("Esta oferta ya tiene un perfil asignado"); 
+                    }
+                }); 
+            }
+
+            PerfilDeIngreso savedPerfil = repositorio.save(perfilDeIngreso);
             return ResponseEntity.ok(java.util.Map.of("success", true, "message", "Perfil de ingreso guardado", "perfil", savedPerfil)); 
-        } catch (Exception e) {
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest()
+                .body(Map.of("success", false, "message", e.getMessage()));
+        } catch (Exception e) { 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(java.util.Map.of("success", false, "message", "Error en el servidor")); 
         }

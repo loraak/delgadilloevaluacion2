@@ -2,6 +2,8 @@ package com.example.models;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,7 +23,7 @@ import lombok.NoArgsConstructor;
 public class PerfilDeIngreso{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id; 
+    private Integer id; 
 
     private String titulo; 
     private String descripcion; 
@@ -31,7 +33,8 @@ public class PerfilDeIngreso{
     private List<CapacidadTransversal> capacidadesTransversales; 
 
     @OneToOne()
-    @JoinColumn(name = "oferta_id")
+    @JoinColumn(name = "oferta_id", unique = true)
+    @JsonIgnoreProperties("perfilDeIngreso")
     private OfertaEducativa ofertaEducativa;
 }
     

@@ -8,8 +8,7 @@ function agregarInputCapacidad(id = '', descripcion = '') {
         <input type="hidden" class="capacidad-id" value="${id}">
         
         <input type="text" class="form-control capacidad-descripcion" 
-               placeholder="Ej: Pensamiento crítico..." value="${descripcion}" required>
-               
+        placeholder="Ej: Pensamiento crítico..." value="${descripcion}" required>
         <button class="btn text-white" style="background-color: #C73E3E; border-color: #C73E3E;" 
                 type="button" onclick="this.parentElement.remove()">X</button>`;
     
@@ -49,6 +48,9 @@ async function abrirModalPerfil(id) {
             document.getElementById('perfilId').value = perfil.id; 
             document.getElementById('perfilTitulo').value = perfil.titulo;
             document.getElementById('perfilDescripcion').value = perfil.descripcion; 
+            if (perfil.ofertaEducativa) {
+                document.getElementById('ofertaId').value = perfil.ofertaEducativa.id; 
+            }
             if(perfil.capacidadesTransversales && perfil.capacidadesTransversales.length > 0) { 
                 perfil.capacidadesTransversales.forEach(capacidad => { agregarInputCapacidad(capacidad.id, capacidad.descripcion); }); 
                 } else { 
@@ -68,6 +70,14 @@ async function abrirModalPerfil(id) {
 
 async function guardarPerfil(event) { 
     event.preventDefault(); 
+    event.stopPropagation();
+
+    const form = document.getElementById('perfilForm');
+    form.classList.add('was-validated'); 
+    
+    if (!form.checkValidity()) {
+        return; 
+    }
 
     const items = document.querySelectorAll('.capacidad-item'); 
     const listaCapacidades = []; 
@@ -90,7 +100,8 @@ async function guardarPerfil(event) {
         id: idPerfil ? parseInt(idPerfil): null, 
         titulo: document.getElementById('perfilTitulo').value, 
         descripcion: document.getElementById('perfilDescripcion').value, 
-        capacidadesTransversales: listaCapacidades
+        capacidadesTransversales: listaCapacidades, 
+        ofertaEducativa: document.getElementById('ofertaId').value ? { id: parseInt(document.getElementById('ofertaId').value) } : null
     }; 
 
     try { 
@@ -99,15 +110,84 @@ async function guardarPerfil(event) {
             headers: { 'Content-Type' : 'application/json'},
             body: JSON.stringify(data)
         }); 
-
+        
         if (!response.ok) { 
-            const errorData = await response.json().catch(() => ({message: 'Error al guardar la oferta'})); 
+            const errorData = await response.json().catch(() => ({message: 'Error al guardar el perfil.'})); 
             throw new Error(errorData.message); 
-        } else { 
+        }
+
+        const result = await response.json(); 
+
+        if (result.success) { 
+            bootstrap.Modal.getInstance(document.getElementById('perfilModal')).hide(); 
+            actualizarOAgregarCardPerfil(result.perfil); 
+        } else {
             mostrarAlertaPerfil(result.message || 'Ocurrió un error al guardar.'); 
         }
     } catch (error) { 
         console.error('Error: ', error); 
         mostrarAlertaPerfil('Error al guardar: ' + error.message); 
     }
+}
+
+function actualizarOAgregarCardPerfil(perfil) {
+    const contenedor = document.getElementById('perfiles-container');
+    if (!contenedor) {
+        window.location.reload();
+        return;
+    }
+
+    let col = document.getElementById(`perfil-card-${perfil.id}`);
+    
+    if (!col) {
+        col = document.createElement('div');
+        col.className = 'col';
+        contenedor.appendChild(col);
+    }
+
+    col.id = `perfil-card-${perfil.id}`;
+
+    let capacidadesHtml = '';
+    if (perfil.capacidadesTransversales && perfil.capacidadesTransversales.length > 0) {
+        capacidadesHtml = '<ul class="list-unstyled mb-0">';
+        perfil.capacidadesTransversales.forEach(capacidad => {
+            capacidadesHtml += `<li><span>${capacidad.descripcion}</span></li>`;
+        });
+        capacidadesHtml += '</ul>';
+    } else {
+        capacidadesHtml = '<small class="text-muted">No hay capacidades registradas.</small>';
+    }
+
+    const nombreOferta = perfil.ofertaEducativa ? perfil.ofertaEducativa.nombreOferta : 'Sin oferta';
+
+    col.innerHTML = `
+        <div class="card h-100 shadow-sm border-1">
+            <div class="card-body d-flex flex-column">
+                <h6 class="fw-semibold text-secondary">Título:</h6>
+                <h5 class="card-title">${perfil.titulo}</h5>
+                <div class="mb-2">
+                    <h6 class="fw-semibold text-secondary">Descripción:</h6>
+                    <span class="text-dark">${perfil.descripcion}</span>
+                </div>
+                <div class="mb-3">
+                    <h6 class="fw-semibold text-secondary">Capacidades Transversales:</h6>
+                    ${capacidadesHtml}
+                </div>
+                <div class="mb-2">
+                    <h6 class="fw-semibold text-secondary">Oferta Educativa:</h6>
+                    <span class="text-dark">${nombreOferta}</span>
+                </div>
+                <div class="mt-auto pt-3">
+                    <button type="button" class="btn text-white w-100 fw-semibold"
+                        style="background-color: #6AA276; border-color: #6AA276;" 
+                        onclick="abrirModalPerfil(${perfil.id})">Editar</button>
+                </div>
+                <div class="mt-2">
+                    <button type="button" class="btn text-white w-100 fw-semibold" 
+                        style="background-color: #C73E3E; border-color:#C73E3E;" 
+                        onclick="eliminarPerfil(${perfil.id})">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    `;
 }

@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class CapacidadTransversal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     private String descripcion;
 
     public CapacidadTransversal(String descripcion) {

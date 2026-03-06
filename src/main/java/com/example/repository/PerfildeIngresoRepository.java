@@ -7,4 +7,6 @@ import com.example.models.PerfilDeIngreso;
 
 public interface PerfildeIngresoRepository extends JpaRepository<PerfilDeIngreso, Integer>{
     Optional<PerfilDeIngreso> findById(Long id); 
+
+    Optional<PerfilDeIngreso> findByOfertaEducativaId(Integer id);
 }
