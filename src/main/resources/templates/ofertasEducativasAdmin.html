@@ -61,6 +61,8 @@
                                         <li th:each="competencia : ${oferta.perfilProfesional.competenciasBase}" th:text="${competencia.descripcion}"></li>
                                     </ul>
                                 </div>
+                                <span class="fw-bold">Plan de Estudios: </span>
+                                <img th:src="@{${oferta.planEstudios.imagen}}" style="height: 200px; object-fit: cover;">
                                 <div class="mt-auto pt-3">
                                     <button type="button" class="btn text-white w-100 fw-semibold"
                                         style="background-color: #6AA276; border-color: #6AA276;"

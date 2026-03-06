@@ -41,5 +41,9 @@ public class OfertaEducativa {
 
     @OneToOne(mappedBy = "ofertaEducativa", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("ofertaEducativa")
-    private PerfilProfesional perfilProfesional; 
+    private PerfilProfesional perfilProfesional;
+    
+    @OneToOne(mappedBy = "ofertaEducativa", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("ofertaEducativa")
+    private PlanEstudios planEstudios;
 }
