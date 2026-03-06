@@ -159,6 +159,20 @@ async function guardarPlan(event) {
     }
 }
 
-async function eliminarPlan() {
-
+async function eliminarPlan(id) {
+    try { 
+        const response = await fetch(`/api/planestudios/delete/${id}`, {
+            method: 'DELETE'
+        }); 
+        if (response.ok) { 
+            const tarjeta = document.getElementById(`plan-card-${id}`)
+            if (tarjeta) { 
+                tarjeta.remove(); 
+            }
+        } else { 
+            console.log("Problemas"); 
+        }
+    } catch (error) { 
+        console.error("Error", error); 
+    }
 }
