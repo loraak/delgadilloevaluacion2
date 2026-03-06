@@ -36,6 +36,7 @@ public class PerfilDeIngresoController {
         model.addAttribute("title", "Perfiles de Ingreso"); 
         List<PerfilDeIngreso> perfiles = repositorio.findAll(); 
         model.addAttribute("perfiles", perfiles);
+        model.addAttribute("ofertas", ofertasRepositorio.findAll());
         return "perfilesIngreso"; 
     }
 

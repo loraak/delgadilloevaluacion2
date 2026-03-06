@@ -27,6 +27,40 @@
                                     <span class="fw-bold">Perfil de Ingreso: </span>
                                     <span class="text-dark" th:text="${oferta.perfilDeIngreso != null ? oferta.perfilDeIngreso.titulo : 'Sin perfil registrado'}"></span>
                                 </div>
+                                <div class="mb-2" th:if="${oferta.perfilDeIngreso != null and !oferta.perfilDeIngreso.capacidadesTransversales.empty}">
+                                    <h7 class="fw-semibold text-secondary">Capacidades Transversales:</h7>
+                                    <ul class="list-unstyled">
+                                        <li th:each="capacidad : ${oferta.perfilDeIngreso.capacidadesTransversales}" th:text="${capacidad.descripcion}"></li>
+                                    </ul>
+                                </div>
+                                <div class="mb-2" th:if="${oferta.perfilDeIngreso != null and !oferta.perfilDeIngreso.capacidadesEspecificas.empty}">
+                                    <h7 class="fw-semibold text-secondary">Capacidades Específicas:</h7>
+                                    <ul class="list-unstyled">
+                                        <li th:each="capacidad : ${oferta.perfilDeIngreso.capacidadesEspecificas}" th:text="${capacidad.descripcion}"></li>
+                                    </ul>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="fw-bold">Perfil Profesional: </span>
+                                    <span class="text-dark" th:text="${oferta.perfilProfesional != null ? oferta.perfilProfesional.titulo : 'Sin perfil registrado'}"></span>
+                                </div>
+                                <div class="mb-2" th:if="${oferta.perfilProfesional != null and !oferta.perfilProfesional.capacidadesTransversales.empty}">
+                                    <h7 class="fw-semibold text-secondary">Capacidades Transversales:</h7>
+                                    <ul class="list-unstyled">
+                                        <li th:each="capacidad : ${oferta.perfilProfesional.capacidadesTransversales}" th:text="${capacidad.descripcion}"></li>
+                                    </ul>
+                                </div>
+                                <div class="mb-2" th:if="${oferta.perfilProfesional != null and !oferta.perfilProfesional.capacidadesEspecificas.empty}">
+                                    <h7 class="fw-semibold text-secondary">Capacidades Específicas:</h7>
+                                    <ul class="list-unstyled">
+                                        <li th:each="capacidad : ${oferta.perfilProfesional.capacidadesEspecificas}" th:text="${capacidad.descripcion}"></li>
+                                    </ul>
+                                </div>
+                                <div class="mb-2" th:if="${oferta.perfilProfesional != null and !oferta.perfilProfesional.competenciasBase.empty}">
+                                    <h7 class="fw-semibold text-secondary">Competencias Base:</h7>
+                                    <ul class="list-unstyled">
+                                        <li th:each="competencia : ${oferta.perfilProfesional.competenciasBase}" th:text="${competencia.descripcion}"></li>
+                                    </ul>
+                                </div>
                                 <div class="mt-auto pt-3">
                                     <button type="button" class="btn text-white w-100 fw-semibold"
                                         style="background-color: #6AA276; border-color: #6AA276;"

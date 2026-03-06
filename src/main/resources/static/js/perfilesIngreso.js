@@ -56,7 +56,7 @@ async function abrirModalPerfil(id) {
     limpiarFormularioPerfil(); 
 
     if (id) { 
-        modalTitle.textContent = "Editar Perfil"; 
+        modalTitle.textContent = "Editar Perfil de Ingreso"; 
         try { 
             const response = await fetch(`/api/perfiles/${id}`); 
             if (!response.ok) { 
@@ -71,14 +71,14 @@ async function abrirModalPerfil(id) {
             }
             if(perfil.capacidadesTransversales && perfil.capacidadesTransversales.length > 0) { 
                 perfil.capacidadesTransversales.forEach(capacidad => { agregarInputCapacidad(capacidad.id, capacidad.descripcion); }); 
-                } else { 
-                    agregarInputCapacidad(); 
-                } 
+            } else { 
+                agregarInputCapacidad(); 
+            } 
             if(perfil.capacidadesEspecificas && perfil.capacidadesEspecificas.length > 0) { 
                 perfil.capacidadesEspecificas.forEach(capacidadEsp => { agregarInputCapacidadEsp(capacidadEsp.id, capacidadEsp.descripcion); }); 
-                } else { 
-                    agregarInputCapacidadEsp(); 
-                } 
+            } else { 
+                agregarInputCapacidadEsp(); 
+            } 
 
         } catch (error) {
             console.error('Error al obtener el perfil', error); 
@@ -86,7 +86,7 @@ async function abrirModalPerfil(id) {
             return; 
         }
     } else { 
-        modalTitle.textContent = 'Agregar Perfil'; 
+        modalTitle.textContent = 'Agregar Perfil de Ingreso'; 
     }
     modal.show(); 
 } 

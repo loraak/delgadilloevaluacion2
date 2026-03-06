@@ -12,14 +12,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Entity
-public class CapacidadEspecifica {
+public class CompetenciaBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id; 
     private String descripcion; 
-    private int ciclo; 
 
-    public CapacidadEspecifica(String descripcion) { 
+    public CompetenciaBase(String descripcion) { 
         this.descripcion = descripcion; 
     }
 }

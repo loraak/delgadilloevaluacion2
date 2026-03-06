@@ -38,6 +38,7 @@ public class OfertaEducativaController {
         model.addAttribute("title", "Ofertas Educativas"); 
         List<OfertaEducativa> ofertas = repositorio.findAll(); 
         model.addAttribute("ofertas", ofertas); 
+        model.addAttribute("divisiones", divisionRepositorio.findAll()); 
         return "ofertasEducativas";    
     }
 
