@@ -158,8 +158,8 @@ async function guardarPerfil(event) {
         const result = await response.json(); 
 
         if (result.success) { 
-            bootstrap.Modal.getInstance(document.getElementById('perfilModal')).hide(); 
-            actualizarOAgregarCardPerfil(result.perfil); 
+            bootstrap.Modal.getInstance(document.getElementById('perfilModal')).hide();
+            window.location.reload(); // ← Sin DOM: recarga toda la página
         } else {
             mostrarAlertaPerfil(result.message || 'Ocurrió un error al guardar.'); 
         }

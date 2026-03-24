@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/fragment :: head('Iniciar Sesión')}"></head>
+
+    <body> 
+        <div class="container d-flex justify-content-center align-items-center" style="min-height: 65vh;">
+            <main class="w-100" style="max-width: 450px;">
+                <div class="card shadow-sm border-1">
+                    <div class="card-body p-4">
+                        <h2 class="text-center mb-4 fw-bold">Iniciar Sesión</h2>
+                        
+                        <div th:if="${param.error}" class="alert alert-danger text-center small">
+                            Usuario o contraseña inválidos.
+                        </div>
+                        <div th:if="${param.logout}" class="alert alert-success text-center small">
+                            Has cerrado sesión correctamente.
+                        </div>
+
+                        <form th:action="@{/login}" method="post">
+                            <div class="mb-3">
+                                <label for="username" class="form-label fw-semibold text-secondary">Usuario o Correo</label>
+                                <input type="text" id="username" name="username" class="form-control" required autofocus>
+                            </div>
+                            <div class="mb-4">
+                                <label for="password" class="form-label fw-semibold text-secondary">Contraseña</label>
+                                <input type="password" id="password" name="password" class="form-control" required>
+                            </div>
+                            <div class="text-end mb-3">
+                                <a th:href="@{/email/form}" class="text-decoration-none small">¿Olvidaste tu contraseña?</a>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 fw-bold">Entrar</button>
+                        </form>
+                    </div>
+                </div>
+            </main>
+        </div>
+ 
+        <div th:replace="~{fragments/fragment :: scripts}"></div>
+    </body>
+</html>
