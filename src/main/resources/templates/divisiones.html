@@ -32,7 +32,7 @@
                                 </button>
                                 <button type="button" class="btn btn-sm text-white fw-semibold"
                                     style="background-color: #c0392b; border-color: #c0392b;"
-                                    th:onclick="|eliminarDivision(${division.id})|">
+                                    th:onclick="|eliminarDivision(${division.id})|" sec:authorize="hasRole('ADMIN')">
                                     Eliminar
                                 </button>
                             </td>
@@ -42,8 +42,7 @@
             </main>
         </div>
 
-        <button type="button" onclick="abrirModalDivision()" class="btn text-white rounded-circle d-flex align-items-center justify-content-center shadow-lg"
-            style="position: fixed; bottom: 30px; left: 30px; width: 60px; height: 60px; background-color: #6AA276; border-color: #6AA276; font-size: 30px; z-index: 500; text-decoration: none;" title="Agregar División">
+        <button type="button" onclick="abrirModalDivision()" class="btn text-white rounded-circle d-flex align-items-center justify-content-center shadow-lg" sec:authorize="hasRole('ADMIN')" style="position: fixed; bottom: 30px; left: 30px; width: 60px; height: 60px; background-color: #6AA276; border-color: #6AA276; font-size: 30px; z-index: 500; text-decoration: none;" title="Agregar División">
             +
         </button>
 

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head th:replace="~{fragments/fragment :: head('Sección Institucional')}"></head>
+
+    <body>
+        <nav th:replace="~{fragments/fragment :: navbar}"></nav>
+        <nav th:replace="~{fragments/fragment :: breadcrumb('Sección Institucional', null, null)}"></nav>
+        <div class="container">
+            <main>
+                <h2 class="text-center my-4">Sección Institucional</h2>
+                <div class="row justify-content-center" id="seccion-container">
+                    <div class="col-md-8" th:each="seccion : ${secciones}" th:id="|seccion-card-${seccion.id}|">
+                        <div class="card shadow-sm border-1 mb-4">
+                            <div class="card-body p-4">
+                                <div class="mb-3">
+                                    <h4 class="fw-bold text-secondary">Misión</h4>
+                                    <p th:text="${seccion.mision}"></p>
+                                </div>
+                                <div class="mb-3">
+                                    <h4 class="fw-bold text-secondary">Visión</h4>
+                                    <p th:text="${seccion.vision}"></p>
+                                </div>
+                                <div class="mb-3">
+                                    <h4 class="fw-bold text-secondary">Política de Calidad</h4>
+                                    <p th:text="${seccion.politica}"></p>
+                                </div>
+                                <div class="mb-3">
+                                    <h4 class="fw-bold text-secondary">Objetivos</h4>
+                                    <p th:text="${seccion.objetivos}"></p>
+                                </div>
+                                <div class="mb-3">
+                                    <h4 class="fw-bold text-secondary">Valores</h4>
+                                    <p th:text="${seccion.valores}"></p>
+                                </div>
+                                <div sec:authorize="hasRole('ADMIN')">
+                                    <div class="mt-auto pt-3">
+                                        <button type="button" class="btn text-white w-100 fw-semibold"
+                                            style="background-color: #6AA276; border-color: #6AA276;" th:onclick="|abrirModalSeccion(${seccion.id})|">Editar</button>
+                                    </div>
+                                    <div class="mt-2">
+                                        <button type="button" class="btn text-white w-100 fw-semibold" style="background-color: #C73E3E; border-color:#C73E3E;" th:onclick="|eliminarSeccion(${seccion.id})|"> Eliminar </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="${#lists.isEmpty(secciones)}" class="text-center">
+                        <p>No hay información institucional para mostrar.</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <button type="button" onclick="abrirModalSeccion()" sec:authorize="hasRole('ADMIN')"
+            class="btn text-white rounded-circle d-flex align-items-center justify-content-center shadow-lg"
+            style="position: fixed; bottom: 30px; left: 30px; width: 60px; height: 60px; background-color: #6AA276; border-color: #6AA276; font-size: 30px; z-index: 500;" title="Agregar Sección">
+            +
+        </button>
+
+        <!-- Modal -->
+        <div sec:authorize="hasRole('ADMIN')">
+            <div class="modal fade" id="seccionModal" tabindex="-1" aria-labelledby="seccionModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="seccionModalLabel"></h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="seccionForm" class="needs-validation" novalidate onsubmit="guardarSeccion(event)">
+                                <input type="hidden" id="seccionId" name="id">
+                                <div class="mb-3">
+                                    <label for="mision" class="form-label fw-bold">Misión:</label>
+                                    <textarea class="form-control" id="mision" name="mision" rows="3" required></textarea>
+                                    <div class="invalid-feedback">La misión es obligatoria.</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="vision" class="form-label fw-bold">Visión:</label>
+                                    <textarea class="form-control" id="vision" name="vision" rows="3" required></textarea>
+                                    <div class="invalid-feedback">La visión es obligatoria.</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="politica" class="form-label fw-bold">Política de Calidad:</label>
+                                    <textarea class="form-control" id="politica" name="politica" rows="3" required></textarea>
+                                    <div class="invalid-feedback">La política es obligatoria.</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="objetivos" class="form-label fw-bold">Objetivos:</label>
+                                    <textarea class="form-control" id="objetivos" name="objetivos" rows="3" required></textarea>
+                                    <div class="invalid-feedback">Los objetivos son obligatorios.</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="valores" class="form-label fw-bold">Valores:</label>
+                                    <textarea class="form-control" id="valores" name="valores" rows="3" required></textarea>
+                                    <div class="invalid-feedback">Los valores son obligatorios.</div>
+                                </div>
+                                <div id="seccionAlertaError" class="alert alert-danger d-none" role="alert"></div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" form="seccionForm" class="btn text-white fw-semibold"
+                                style="background-color: #6AA276; border-color: #6AA276;">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div th:replace="~{fragments/fragment :: scripts}"></div>
+        <script th:src="@{/js/seccionInstitucional.js}" sec:authorize="hasRole('ADMIN')"></script>
+    </body>
+</html>

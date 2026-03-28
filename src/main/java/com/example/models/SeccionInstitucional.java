@@ -20,23 +20,23 @@ public class SeccionInstitucional {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank(message = "El tipo es obligatorio")
-    @Column(length = 300)
+    @NotBlank(message = "La misión es obligatoria")
+    @Column(columnDefinition = "TEXT")
     private String mision;
 
-    @NotBlank(message = "El tipo es obligatorio")
-    @Column(length = 300)
+    @NotBlank(message = "La visión es obligatoria")
+    @Column(columnDefinition = "TEXT")
     private String vision;
 
-    @NotBlank(message = "El tipo es obligatorio")
-    @Column(length = 300)
+    @NotBlank(message = "La política es obligatoria")
+    @Column(columnDefinition = "TEXT")
     private String politica;
 
-    @NotBlank(message = "El tipo es obligatorio")
-    @Column(length = 300)
+    @NotBlank(message = "Los objetivos son obligatorios")
+    @Column(columnDefinition = "TEXT")
     private String objetivos;
 
-    @NotBlank(message = "El tipo es obligatorio")
-    @Column(length = 300)
+    @NotBlank(message = "Los valores son obligatorios")
+    @Column(columnDefinition = "TEXT")
     private String valores;
 }

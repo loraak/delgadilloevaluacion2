@@ -49,9 +49,16 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(authz -> authz
-                .requestMatchers("/", "/login", "/ofertas-educativas", "/divisiones", "/email/**").permitAll()
-                .requestMatchers("/admin/ofertas-educativas/**").hasRole("ADMIN")
+                .requestMatchers("/", "/login", "/ofertas-educativas", "/divisiones", "/email/**", "/seccion-institucional",
+                        "/perfiles-ingreso", "/perfiles-profesionales", "/plan-estudios")
+                .permitAll()
+                .requestMatchers("/admin/ofertas-educativas/**", "/api/seccion-institucional/**",
+                        "/admin/perfiles-ingreso/**", "/api/perfiles/**", "/api/perfil/**",
+                        "/admin/perfiles-profesionales/**", "/api/perfilesprofesionales/**", "/api/perfilprofesional/**",
+                        "/admin/plan-estudios/**", "/api/planestudios/**")
+                .hasRole("ADMIN")
                 .requestMatchers("/admin/divisiones/**").hasAnyRole("ADMIN", "COORDINADOR")
                 .anyRequest().authenticated()
             )
