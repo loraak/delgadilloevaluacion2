@@ -31,7 +31,7 @@ public class EmailService {
         Context context = new Context();
         context.setVariable("nombre", dto.getAsunto());
         context.setVariable("mensaje", dto.getMensaje());
-        context.setVariable("codigo", (int) (Math.random() * 99999));
+        context.setVariable("codigo", dto.getCodigo());
 
         String htmlContent = templateEngine.process("email-template", context);
 

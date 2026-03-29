@@ -1,7 +1,6 @@
 package com.example.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +19,7 @@ public class EmailController {
     @GetMapping("/email/form")
     public String form(Model model, EmailDTO emailDTO) { 
         model.addAttribute("emailDTO", emailDTO); 
-        return "emailForm"; 
+        return "forgot-password"; 
     }
 
     @PostMapping("/email/enviar")

@@ -26,11 +26,11 @@
                                 </div>
                                 <div class="mb-3">
                                     <h4 class="fw-bold text-secondary">Objetivos</h4>
-                                    <p th:text="${seccion.objetivos}"></p>
+                                    <ul><li th:each="obj : ${seccion.objetivos}" th:text="${obj}"></li></ul>
                                 </div>
                                 <div class="mb-3">
                                     <h4 class="fw-bold text-secondary">Valores</h4>
-                                    <p th:text="${seccion.valores}"></p>
+                                    <ul><li th:each="val : ${seccion.valores}" th:text="${val}"></li></ul>
                                 </div>
                                 <div sec:authorize="hasRole('ADMIN')">
                                     <div class="mt-auto pt-3">

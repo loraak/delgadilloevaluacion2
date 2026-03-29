@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/fragment :: head('Verificar Código')}"></head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="card my-5">
+                    <div class="card-body">
+                        <h3 class="card-title text-center mb-4">Verificar Código</h3>
+                        <p class="text-center text-muted">Hemos enviado un código a tu correo. Ingrésalo a continuación.</p>
+                        
+                        <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+                        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+                        <form th:action="@{/verify-code}" method="post">
+                            <input type="hidden" name="email" th:value="${email}" />
+                            <div class="mb-3">
+                                <label for="code" class="form-label">Código de 6 dígitos</label>
+                                <input type="text" class="form-control" id="code" name="code" required autofocus maxlength="6">
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn text-white" style="background-color: #6AA276;">Verificar y Continuar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="~{fragments/fragment :: scripts}"></div>
+</body>
+</html>

@@ -1,7 +1,13 @@
 package com.example.models;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.example.service.StringListConverter;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,11 +38,13 @@ public class SeccionInstitucional {
     @Column(columnDefinition = "TEXT")
     private String politica;
 
-    @NotBlank(message = "Los objetivos son obligatorios")
+    @Convert(converter = StringListConverter.class)
     @Column(columnDefinition = "TEXT")
-    private String objetivos;
+    private List<String> objetivos = new ArrayList<>();
 
-    @NotBlank(message = "Los valores son obligatorios")
+    @Convert(converter = StringListConverter.class)
     @Column(columnDefinition = "TEXT")
-    private String valores;
+    private List<String> valores = new ArrayList<>();
+
+    private Boolean activa = false;
 }

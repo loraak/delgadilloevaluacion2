@@ -18,8 +18,11 @@ async function abrirModalSeccion(id) {
             document.getElementById('mision').value = seccion.mision;
             document.getElementById('vision').value = seccion.vision;
             document.getElementById('politica').value = seccion.politica;
-            document.getElementById('objetivos').value = seccion.objetivos;
-            document.getElementById('valores').value = seccion.valores;
+            document.getElementById('objetivos-lista').innerHTML = '';
+            document.getElementById('valores-lista').innerHTML = '';
+            (seccion.objetivos || []).forEach(o => agregarItem('objetivos', o));
+            (seccion.valores || []).forEach(v => agregarItem('valores', v));
+            document.getElementById('seccionActiva').checked = seccion.activa;
 
         } catch (error) {
             console.error('Error al obtener los datos de la sección:', error);
@@ -39,6 +42,28 @@ function limpiarFormularioSeccion() {
     form.classList.remove('was-validated');
     document.getElementById('seccionAlertaError').classList.add('d-none');
     document.getElementById('seccionId').value = '';
+    document.getElementById('objetivos-lista').innerHTML = '';
+    document.getElementById('valores-lista').innerHTML = '';
+    (document.objetivos || []).forEach(o => agregarItem('objetivos', o));
+    (document.valores || []).forEach(v => agregarItem('valores', v));
+}
+
+function agregarItem(tipo, valor = '') {
+    const lista = document.getElementById(`${tipo}-lista`);
+    const div = document.createElement('div');
+    div.className = 'd-flex gap-2 mb-2';
+    div.innerHTML = `
+        <input type="text" class="form-control" 
+        data-tipo="${tipo}" placeholder="Escribe aquí..." value="${valor}" required>
+        <button type="button" class="btn btn-outline-danger btn-sm" onclick="this.parentElement.remove()">✕</button>
+    `;
+    lista.appendChild(div);
+}
+
+function obtenerLista(tipo) {
+    return [...document.querySelectorAll(`[data-tipo="${tipo}"]`)]
+        .map(input => input.value.trim())
+        .filter(v => v !== '');
 }
 
 function mostrarAlertaSeccion(mensaje) {
@@ -60,13 +85,26 @@ async function guardarSeccion(event) {
 
     const id = document.getElementById('seccionId').value;
 
+    const objetivos = obtenerLista('objetivos');
+    const valores = obtenerLista('valores');
+
+    if (objetivos.length === 0) {
+        mostrarAlertaSeccion('Debes agregar al menos un objetivo.');
+        return;
+    }
+    if (valores.length === 0) {
+        mostrarAlertaSeccion('Debes agregar al menos un valor.');
+        return;
+    }
+
     const data = {
         id: id ? parseInt(id) : null,
         mision: document.getElementById('mision').value,
         vision: document.getElementById('vision').value,
         politica: document.getElementById('politica').value,
-        objetivos: document.getElementById('objetivos').value,
-        valores: document.getElementById('valores').value
+        objetivos: obtenerLista('objetivos'),
+        valores: obtenerLista('valores'),
+        activa: document.getElementById('seccionActiva').checked
     };
 
     try {
@@ -119,13 +157,16 @@ function actualizarOAgregarCard(seccion) {
     }
 
     cardContainer.innerHTML = `
-        <div class="card shadow-sm border-1 mb-4">
+        <div class="card shadow-sm border-1 mb-4 ${seccion.activa ? 'border-success border-2' : ''}">
+            <div class="card-header fw-bold ${seccion.activa ? 'text-success' : ''}">
+                ${seccion.activa ? 'SECCIÓN ACTIVA' : 'Sección Inactiva'}
+            </div>
             <div class="card-body p-4">
                 <div class="mb-3"><h4 class="fw-bold text-secondary">Misión</h4><p>${seccion.mision}</p></div>
                 <div class="mb-3"><h4 class="fw-bold text-secondary">Visión</h4><p>${seccion.vision}</p></div>
                 <div class="mb-3"><h4 class="fw-bold text-secondary">Política de Calidad</h4><p>${seccion.politica}</p></div>
-                <div class="mb-3"><h4 class="fw-bold text-secondary">Objetivos</h4><p>${seccion.objetivos}</p></div>
-                <div class="mb-3"><h4 class="fw-bold text-secondary">Valores</h4><p>${seccion.valores}</p></div>
+                <div class="mb-3"><h4 class="fw-bold text-secondary">Objetivos</h4><ul>${(seccion.objetivos || []).map(o => `<li>${o}</li>`).join('')}</ul></div>
+                <div class="mb-3"><h4 class="fw-bold text-secondary">Valores</h4><ul>${(seccion.valores || []).map(v => `<li>${v}</li>`).join('')}</ul></div>
                 <div class="mt-auto pt-3"><button type="button" class="btn text-white w-100 fw-semibold" style="background-color: #6AA276; border-color: #6AA276;" onclick="abrirModalSeccion(${seccion.id})">Editar</button></div>
                 <div class="mt-2"><button type="button" class="btn text-white w-100 fw-semibold" style="background-color: #C73E3E; border-color:#C73E3E;" onclick="eliminarSeccion(${seccion.id})"> Eliminar </button></div>
             </div>

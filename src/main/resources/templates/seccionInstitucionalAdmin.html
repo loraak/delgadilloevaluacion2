@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/fragment :: head('Admin - Sección Institucional')}"></head>
+<body>
+    <nav th:replace="~{fragments/fragment :: navbar}"></nav>
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Administrar Sección Institucional</h2>
+            <button type="button" class="btn text-white" style="background-color: #6AA276;" onclick="abrirModalSeccion(null)">
+                Agregar Sección
+            </button>
+        </div>
+
+        <!-- Contenedor para las tarjetas de sección -->
+        <div id="seccion-container" class="row justify-content-center">
+            <div th:each="seccion : ${secciones}" th:id="|seccion-card-${seccion.id}|" class="col-md-8">
+                <div class="card shadow-sm border-1 mb-4" th:classappend="${seccion.activa} ? 'border-success border-2' : ''">
+                    <div class="card-header fw-bold" th:classappend="${seccion.activa} ? 'text-success' : ''" th:text="${seccion.activa} ? 'SECCIÓN ACTIVA' : 'Sección Inactiva'"></div>
+                    <div class="card-body p-4">
+                        <div class="mb-3">
+                            <h4 class="fw-bold text-secondary">Misión</h4>
+                            <p th:text="${seccion.mision}"></p>
+                        </div>
+                        <div class="mb-3">
+                            <h4 class="fw-bold text-secondary">Visión</h4>
+                            <p th:text="${seccion.vision}"></p>
+                        </div>
+                        <div class="mb-3">
+                            <h4 class="fw-bold text-secondary">Política de Calidad</h4>
+                            <p th:text="${seccion.politica}"></p>
+                        </div>
+                        <div class="mb-3">
+                            <h4 class="fw-bold text-secondary">Objetivos</h4>
+                            <ul><li th:each="obj : ${seccion.objetivos}" th:text="${obj}"></li></ul>
+                        </div>
+                        <div class="mb-3">
+                            <h4 class="fw-bold text-secondary">Valores</h4>
+                            <ul><li th:each="val : ${seccion.valores}" th:text="${val}"></li></ul>
+                        </div>
+                        <div class="mt-auto pt-3">
+                            <button type="button" class="btn text-white w-100 fw-semibold" style="background-color: #6AA276; border-color: #6AA276;" th:onclick="|abrirModalSeccion(${seccion.id})|">Editar</button>
+                        </div>
+                        <div class="mt-2">
+                            <button type="button" class="btn text-white w-100 fw-semibold" style="background-color: #C73E3E; border-color:#C73E3E;" th:onclick="|eliminarSeccion(${seccion.id})|">Eliminar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="seccionModal" tabindex="-1" aria-labelledby="seccionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="seccionModalLabel">Agregar Sección Institucional</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="seccionForm" novalidate onsubmit="guardarSeccion(event)">
+                        <input type="hidden" id="seccionId">
+                        <div class="mb-3"><label for="mision" class="form-label">Misión</label><textarea class="form-control" id="mision" rows="3" required></textarea></div>
+                        <div class="mb-3"><label for="vision" class="form-label">Visión</label><textarea class="form-control" id="vision" rows="3" required></textarea></div>
+                        <div class="mb-3"><label for="politica" class="form-label">Política de Calidad</label><textarea class="form-control" id="politica" rows="3" required></textarea></div>
+                        <div class="mb-3">
+                            <label class="form-label">Objetivos</label>
+                            <div id="objetivos-lista"></div>
+                            <button type="button" class="btn btn-sm btn-outline-secondary mt-1" onclick="agregarItem('objetivos')">+ Agregar objetivo</button>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Valores</label>
+                            <div id="valores-lista"></div>
+                            <button type="button" class="btn btn-sm btn-outline-secondary mt-1" onclick="agregarItem('valores')">+ Agregar valor</button>
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" role="switch" id="seccionActiva">
+                            <label class="form-check-label" for="seccionActiva">Marcar como sección activa</label>
+                        </div>
+                        <div id="seccionAlertaError" class="alert alert-danger d-none" role="alert"></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn text-white" style="background-color: #6AA276;">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/fragment :: scripts}"></div>
+    <script th:src="@{/js/seccionInstitucional.js}"></script>
+</body>
+</html>
