@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -31,17 +30,9 @@ public class SeccionInstitucionalController {
     @GetMapping("/seccion-institucional")
     public String seccionInstitucional(Model model) {
         model.addAttribute("title", "Sección Institucional");
-        List<SeccionInstitucional> secciones = repositorio.findByActiva(true);
+        List<SeccionInstitucional> secciones = repositorio.findAll();
         model.addAttribute("secciones", secciones);
         return "seccionInstitucional";
-    }
-
-    @GetMapping("/admin/seccion-institucional")
-    public String seccionInstitucionalAdmin(Model model) {
-        model.addAttribute("title", "Administrar Sección Institucional");
-        List<SeccionInstitucional> secciones = repositorio.findAll(Sort.by(Sort.Direction.DESC, "id"));
-        model.addAttribute("secciones", secciones);
-        return "seccionInstitucionalAdmin";
     }
     
     @GetMapping("/api/seccion-institucional/{id}")

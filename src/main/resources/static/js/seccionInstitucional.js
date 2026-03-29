@@ -146,10 +146,29 @@ function actualizarOAgregarCard(seccion) {
         return;
     }
 
+    if (seccion.activa) {
+        const allCards = document.querySelectorAll('[id^="seccion-card-"]');
+        allCards.forEach(cardContainer => {
+            const cardId = parseInt(cardContainer.id.replace('seccion-card-', ''));
+            if (cardId !== seccion.id) {
+                const card = cardContainer.querySelector('.card');
+                const header = cardContainer.querySelector('.card-header');
+                card?.classList.remove('border-success', 'border-2');
+                header?.classList.remove('text-success');
+                if (header) header.textContent = 'Sección Inactiva';
+            }
+        });
+    }
+
     let cardContainer = document.getElementById(`seccion-card-${seccion.id}`);
     const isNew = !cardContainer;
 
     if (isNew) {
+        const noDataMsg = document.getElementById('seccion-no-data-msg');
+        if (noDataMsg) {
+            noDataMsg.remove();
+        }
+
         cardContainer = document.createElement('div');
         cardContainer.className = 'col-md-8';
         cardContainer.id = `seccion-card-${seccion.id}`;
