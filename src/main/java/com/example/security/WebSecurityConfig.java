@@ -34,15 +34,14 @@ public class WebSecurityConfig implements WebMvcConfigurer {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(authz -> authz
                 .requestMatchers("/", "/login", "/forgot-password", "/reset-password", "/verify-code", 
-                        "/ofertas-educativas", "/divisiones", "/email/**", "/seccion-institucional",
-                        "/perfiles-ingreso", "/perfiles-profesionales", "/plan-estudios")
+                        "/email/**")
                 .permitAll()
                 .requestMatchers("/admin/ofertas-educativas/**", "/admin/seccion-institucional/**", "/api/seccion-institucional/**",
-                        "/admin/perfiles-ingreso/**", "/api/perfiles/**", "/api/perfil/**",
-                        "/admin/perfiles-profesionales/**", "/api/perfilesprofesionales/**", "/api/perfilprofesional/**",
-                        "/admin/plan-estudios/**", "/api/planestudios/**")
-                .hasRole("ADMIN")
-                .requestMatchers("/admin/divisiones/**").hasAnyRole("ADMIN", "COORDINADOR")
+                        "/api/perfil/**",
+                        "/api/perfilesprofesionales/**", "/api/perfilprofesional/**",
+                        "/api/planestudios/**")
+                .hasAnyRole("ADMIN", "RECTOR")
+                .requestMatchers("/api/divisiones/**", "/api/division/**", "/api/perfilesprofesionales/**", "/api/perfilprofesional/**", "/api/perfiles/**").hasAnyRole("ADMIN", "COORDINADOR", "SECRETARIA", "RECTOR")
                 .anyRequest().authenticated()
             )
             .formLogin((form) -> form
